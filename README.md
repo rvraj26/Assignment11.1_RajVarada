@@ -52,6 +52,13 @@ The data has 18 features and 426880 entries. The data examination and plotting i
 ## Modeling
 
 ## Evaluation
+
 ## Deployment
+The Jupyter Notebook for this assignment is checked into the Git Hub repository at https://github.com/rvraj26/Assignmen11.1_RajVarada
+  
 ## Results
+
 ## Future Work
+1. Enhance the code to identify the features are a good predictor of a used car sale, given the attributes of a customer and an automobile
+2. Enhance the NaN handling. Have to add a method to add default values for missing data. Add more methods to reduce the amount of data removed due to NaN 
+3. Address and remove the simplifying assumptions during data preparation  
