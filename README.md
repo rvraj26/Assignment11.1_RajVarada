@@ -15,39 +15,46 @@ This exercise provided a wealth of information for the next step, data preparati
 
 ## Data Preparation
 
-The data has 18 features and 426880 entries. The data examination and plotting indicate several opportunites for improving data quality and removing outlier data points. 
-  
-#### Column Removal  
-* There are some columns which either have unique values in the data set or have excessively high cardinality.  
+The data has 18 features and 426880 entries. Examination and plotting of the data indicate several opportunities for improving data quality and removing outlier data points. 
+
+##### Column Removal  
+* some columns either have unique values in the data set or excessively high cardinality.  
 * 'id' and 'VIN' are unique and will not contribute to the saleability or price. These can be dropped.  
 * 'region' has high cardinality and can be dropped. The 'state' and 'census_region' will cover for this feature.  
 * The charts indicate that 'title_status' is mostly "clean". This feature can be dropped.  
-* The charts indicate that 'fuel' is mostly "gas". The rows with other values should dropped and then this feature can be dropped.  
+* The charts indicate that 'fuel' is mostly "gas". The rows with other values should dropped, and then this feature can be dropped.  
+* 'paint_color' was insignificant in the analysis and has many NaN values. Drop the feature.
+    
+##### Row removal  
+* Certain features are critical: price, year, manufacturer, model, odometer. Drop the rows where these features have NaN 
+* Drop rows that have outlier 'price.' (arbitrarily defined as <3000$ and >100000$)  
   
-#### Row removal  
-* Drop rows that have zero 'price' (no target) and severely outlier 'price'.  
-* Drop rows with no 'odometer' values.  
-* Drop rows with no 'year' values.  
-* Drop rows where 'cylinder' is not 4, 6, 8.  
-  
-#### NaN  
-* There is significant number of NaN entries, especially in the following features: 'condition', 'cylinders', 'drive', 'size', 'type', 'paint_color'. It seems that dropping all the NaN data rows will affect the data size, but for simplification, I have chosen to drop rows having >3 NaNs. Further actions of NaN rows can be used to optimize compute time.
+##### NaN  
+* There are a significant number of NaN entries, especially in the following features: 'condition', 'cylinders', 'drive', 'size', 'type', and 'paint_color'. It seems that dropping all the NaN data rows will affect the data size, but for simplification, I have chosen to drop rows having >3 NaNs (which has no effect on this data). 
 * Columns that have more than a third of the data as NaN can also be removed for simplification
+* Further actions of NaN rows can be used to optimize compute time.
   
-#### Improving focus by removing some categories and reducing cardinality   
-* The data for 'year' is too widespread. Obviously 1950 automobiles are not going to impact the price or sellability of more recent cars. A fair approximation is to remove all data that have 'year' < 2001.
-* 'model' has 29000+ unique values. Models with < 200 entries can be removed to improve any outliers.
-* Similarly 'manufacturer' with less than 5000 data rows can be dropped to avoid noise in the regression.  
+##### Improving focus by removing some categories and reducing cardinality   
+* The data for 'year' is too widespread. Obviously, 1950 automobiles will not impact the price or sellability of more recent cars. A fair approximation is removing all data with 'year' < 2001.
+* 'model' has 29000+ unique values. The data is really complex and unclean. The one hot encoder and dataframe size exploded. I decided to keep the top 25 models as-is and change the rest to "other"
+* Similarly, 'manufacturer' with less than 5000 data rows can be dropped to avoid noise in the regression.  
 * Map states to geographic regions based on us census data
-  
-#### Column Data Observation    
+
+##### Column Data Observation    
 * 'year' and 'odometer' have numerical data. The rest of the columns have categorical data and will need One Hot Encoding (OHE).    
 * 'model' and 'odometer' have high unique data. These may need clustering before OHE.  
-* The 'cylinders' column maybe converted to numerical catergory by mapping values.  
-  
-#### Data Preparation based on initial regression runs  
-* In the initial iterations of the work, I filled the NaN data points with "notnumber" However, dataset was too big for my computer with 10-24+ hours of run time for the grid search steps So I chose to remove the NaN rows - it did cause lose of datapoints But, I believe the methods and code is valid. This will be a future work.  
-* The earlier iterations had indicated that paint_color is not a critical feature. So first drop that column and then drop the rows with NaN
+* The 'cylinders' column may be converted to a numerical category by mapping values.  
+
+##### More Data Preparation
+
+1. Impute for missing values, both numerical and categorical features
+2. One Hot Encoding for categorical features
+3. Scale the data to normalize
+
+These can be done in the data preparation step here or as part of the pipeline during regressions. 
+Since the regressions will be run multiple times, it is better to do it before to save run time.
+
+After this, the dataframe will be ready to be split into train and test data sets
   
 ## Modeling
 
