@@ -6,7 +6,7 @@ The goal of the assignment is to find the factors that determine car price and t
   
 ## Methodology  
 
-The CRISP-DM Methodology was used for this exercise. In the Data Understanding and Data Preparation steps, several insights were gained and we were able to drop columns and outlier rows. The data was also cleaned up to remove outliers, and some columns with high cardinality were reduced to a lower cardinality. In the modeling step, grid searches were perfomed using various hyperparameters and estimators.
+The CRISP-DM Methodology was used for this exercise. In the Data Understanding and Data Preparation steps, several insights were gained, which was used for feature selection. Based on the data analysis, a few features that would not impact the results were dropped, and same with the outlier entries. The data was also cleaned up to remove outliers, and some columns with high cardinality were reduced to a lower cardinality. The data was then preprocessed to address missing values, encoding categorical variables, and scaling numerical features before finally splitting data into training and test sets. Next in the model building, two linear models - linear and ridge regression and one non-linear model - decision tree was used. The model is evaluated usin mean square error (MSE). 
 
 ## Data Understanding
 
@@ -58,12 +58,29 @@ After this, the dataframe will be ready to be split into train and test data set
   
 ## Modeling
 
+Two linear models - Linear Regression and Ridge Regression, and one non-linear model decision tree were implemented.
+  
+##### Linear Regression
+In the Linear Regression model, I implemented a pipeline with sequential feature selection followed by linear regression. I attempted Polynomial features but the results went haywire. I ran out of time to fully debug it and so and I disable it. The linear model was run with grid search for and selecting between 2-6 features. Perform K fold cross validation with k=4. The optimal grid paramaters and the MSE with optimal paramaters for train and test data set was computed. The best linear features and their coefficients were computed.
+  
+##### Ridge Regression
+The Ridge regression model was implemented same as the Linear Regression model. I initially tried alpha=[0.01, 0.1, 1, 10, 100, 1000], but the run did not converge in my laptop in one day. So I trimmed it to alpha=[0.01, 0.1, 1, 10]. The optimal grid paramaters and the MSE with optimal paramaters for train and test data set was computed. The best ridge features and their coefficients were computed.
+
+##### Decision Tree
+
+and Lasso Regression. Two non-linear models were created: Random Forest and XGBoost.
+All 3 linear models performed similarly and were only 63% accurate, based on the R² score of 0.63. Test RMSE for all 3 models was 8845.
+GridSearchCV was attempted for the linear models. This required a very long compute time, and only the Ridge model parameter of Alpha = 10 was obtained. Attempts to get other best parameters did not work as GidSearchCV did not converge with the allotted compute power after several iteration increases.
+Decision Tree model performed much better than the Linear Models, capturing non-linear relationships in the data, with 82% accuracy based on the R² score of 0.82. Test RMSE was also slightly better = 6188
+Random Forest model performed the best by reducing overfitting and averaging multiple trees with 89% accuracy. Test RMSE was also slightly better than Decision Tree, and almost half the value of the RMSE error of the Linear Models. Test RMSE = 4863.
+XGBoost performed similarly to Decision Tree with R² score of 0.82 and Test RMSE = 6224
+
 ## Evaluation
 
 ## Deployment
 The Jupyter Notebook for this assignment is checked into the Git Hub repository at https://github.com/rvraj26/Assignmen11.1_RajVarada
   
-## Results
+## Results / Key Findings
 
 ## Future Work
 1. Enhance the code to identify the features are a good predictor of a used car sale, given the attributes of a customer and an automobile
