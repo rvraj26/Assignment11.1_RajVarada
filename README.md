@@ -78,7 +78,7 @@ The results are summarized below.
 
 The models above performed well, and the results have interesting similarities and differences. The table below summarizes the results.
 
-![image](https://github.com/user-attachments/assets/da2fa8c9-5a42-499b-9c59-16b935578085)
+![assignment11_1_results](https://github.com/user-attachments/assets/6ec34103-ba59-42d4-86e2-604d5a1d0e78)
 
 The recommendation is to use the Ridge Model with Optimal Grid params {'ridge__alpha': 0.1, 'sfs__n_features_to_select': 9}
 
